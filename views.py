@@ -28,7 +28,7 @@ def request_certificate(request):
     if request.method == "POST":
         if request.user.is_authenticated():
             # Enter your api key here
-            xqci = CertificateGeneration(api_key="Your_API_KEY")
+            xqci = CertificateGeneration(api_key="84569e57239a1d07bd5518d44e4d882b")
             username = request.user.username
             student = User.objects.get(username=username)
             course_key = SlashSeparatedCourseKey.from_deprecated_string(request.POST.get('course_id'))
