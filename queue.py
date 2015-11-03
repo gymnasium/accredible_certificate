@@ -67,7 +67,7 @@ class CertificateGeneration(object):
         self.whitelist = CertificateWhitelist.objects.all()
         self.restricted = UserProfile.objects.filter(allow_certificate=False)
         self.api_key = api_key
-        
+
 
     def add_cert(self, student, course_id, defined_status="downloadable", course=None, forced_grade=None, template_file=None, title='None'):
         """
@@ -131,7 +131,7 @@ class CertificateGeneration(object):
                        break
                 except:
                     print "this course don't have " +section_key
-              
+
             if not description:
                description = "course_description"
 
@@ -145,7 +145,7 @@ class CertificateGeneration(object):
             cert_mode = enrollment_mode
             if (mode_is_verified and not (user_is_verified and user_is_reverified)):
                 cert_mode = GeneratedCertificate.MODES.honor
-            
+
             if forced_grade:
                 grade['grade'] = forced_grade
 
@@ -190,12 +190,37 @@ class CertificateGeneration(object):
                       approve = True
 
                     grade_into_string =  ''.join('{}{}'.format(key, val) for key, val in grade.items())
-                    payload = {"credential": { "name": course_name, "description": description, "achievement_id": contents['course_id'] , "course_link": "/courses/" +contents['course_id'] + "/about", "approve": approve, "template_name": contents['course_id'] ,"grade": grade_contents, "recipient": {"name": contents['name'], "email": student.email},"evidence_items": [{"description": "Course Transcript", "category": "transcript", "string_object": json.dumps(grade["section_breakdown"])}, {"description": "Final Grade", "category": "grade", "string_object": grade['percent']}]}}
+                    payload = {
+                                "credential":
+                                {
+                                    "name": course_name,
+                                    "description": description,
+                                    "achievement_id": contents['course_id'] ,
+                                    "course_link": "/courses/" +contents['course_id'] + "/about",
+                                    "approve": approve,
+                                    "template_name": course_name,
+                                    "grade": grade_contents,
+                                    "recipient": {"name": contents['name'],
+                                    "email": student.email},
+                                    "evidence_items": [
+                                        {
+                                            "description": "Course Transcript",
+                                            "category": "transcript",
+                                            "string_object": json.dumps(grade["section_breakdown"])
+                                        },
+                                        {
+                                            "description": "Final Grade",
+                                            "category": "grade",
+                                            "string_object": grade['percent']
+                                        }
+                                    ]
+                                }
+                            }
                     payload = json.dumps(payload)
                     r = requests.post('https://api.accredible.com/v1/credentials', payload, headers={'Authorization':'Token token=' + self.api_key, 'Content-Type':'application/json'})
-                    
+
                     if r.status_code == 200:
-                       json_response = r.json()  
+                       json_response = r.json()
                        cert.status = defined_status
                        cert.key = json_response["credential"]["id"]
                        if 'private' in json_response:
@@ -205,7 +230,7 @@ class CertificateGeneration(object):
                        cert.save()
                     else:
                         new_status = "errors"
-                    
+
 
             else:
                 cert_status = status.notpassing
@@ -213,6 +238,3 @@ class CertificateGeneration(object):
                 cert.save()
 
         return new_status
-
-
-
