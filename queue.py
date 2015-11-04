@@ -203,13 +203,22 @@ class CertificateGeneration(object):
                                     "achievement_id": contents['course_id'] ,
                                     "course_link": "/courses/" +contents['course_id'] + "/about",
                                     "approve": approve,
-                                    "template_name": course_name,
+                                    "template_name": contents['course_id'],
                                     "grade": grade_contents,
-                                    "recipient":
-                                    {
-                                        "name": contents['name'],
-                                        "email": student.email
-                                    },
+                                    "recipient": {"name": contents['name'],
+                                    "email": student.email},
+                                    "evidence_items": [
+                                        {
+                                            "description": "Course Transcript",
+                                            "category": "transcript",
+                                            "string_object": json.dumps(grade["section_breakdown"])
+                                        },
+                                        {
+                                            "description": "Final Grade",
+                                            "category": "grade",
+                                            "string_object": grade['percent']
+                                        }
+                                    ]
                                 }
                             }
                     payload = json.dumps(payload)
