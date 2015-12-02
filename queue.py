@@ -189,6 +189,11 @@ class CertificateGeneration(object):
                     else:
                       approve = True
 
+                    # check to see if this is a BETA course
+                    course_name = course_name.strip()
+                    if course_name.startswith("BETA") or course_name.startswith("Beta") or course_name.startswith("beta"):
+                        course_name = course_name[4:].strip()
+                    
                     grade_into_string =  ''.join('{}{}'.format(key, val) for key, val in grade.items())
                     payload = {
                                 "credential":
@@ -203,11 +208,6 @@ class CertificateGeneration(object):
                                     "recipient": {"name": contents['name'],
                                     "email": student.email},
                                     "evidence_items": [
-                                        {
-                                            "description": "Course Transcript",
-                                            "category": "transcript",
-                                            "string_object": json.dumps(grade["section_breakdown"])
-                                        },
                                         {
                                             "description": "Final Grade",
                                             "category": "grade",
