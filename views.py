@@ -3,6 +3,7 @@ from dogapi import dog_stats_api
 import json
 import logging
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -28,7 +29,7 @@ def request_certificate(request):
     if request.method == "POST":
         if request.user.is_authenticated():
             # Enter your api key here
-            xqci = CertificateGeneration(api_key="84569e57239a1d07bd5518d44e4d882b")
+            xqci = CertificateGeneration(api_key=settings.APPSEMBLER_FEATURES['ACCREDIBLE_API_KEY'])
             username = request.user.username
             student = User.objects.get(username=username)
             course_key = SlashSeparatedCourseKey.from_deprecated_string(request.POST.get('course_id'))
