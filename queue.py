@@ -141,9 +141,8 @@ class CertificateGeneration(object):
             enrollment_mode, __ = CourseEnrollment.enrollment_mode_for_user(student, course_id)
             mode_is_verified = (enrollment_mode == GeneratedCertificate.MODES.verified)
             user_is_verified = SoftwareSecurePhotoVerification.user_is_verified(student)
-            user_is_reverified = SoftwareSecurePhotoVerification.user_is_reverified_for_all(course_id, student)
             cert_mode = enrollment_mode
-            if (mode_is_verified and not (user_is_verified and user_is_reverified)):
+            if (mode_is_verified and not (user_is_verified)):
                 cert_mode = GeneratedCertificate.MODES.honor
 
             if forced_grade:
