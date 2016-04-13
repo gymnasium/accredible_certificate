@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 from capa.xqueue_interface import XQUEUE_METRIC_NAME
 from certificates.models import certificate_status_for_student, CertificateStatuses, GeneratedCertificate
@@ -29,7 +30,7 @@ def request_certificate(request):
     if request.method == "POST":
         if request.user.is_authenticated():
             # Enter your api key here
-            xqci = CertificateGeneration(api_key=settings.APPSEMBLER_FEATURES['ACCREDIBLE_API_KEY'])
+            xqci = CertificateGeneration(api_key=settings.APPSEMBLER_FEATURES['ACCREDIBLE_API_KEY')
             username = request.user.username
             student = User.objects.get(username=username)
             course_key = SlashSeparatedCourseKey.from_deprecated_string(request.POST.get('course_id'))
