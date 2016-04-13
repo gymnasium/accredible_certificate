@@ -7,7 +7,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
 
 from capa.xqueue_interface import XQUEUE_METRIC_NAME
 from certificates.models import certificate_status_for_student, CertificateStatuses, GeneratedCertificate
