@@ -30,7 +30,7 @@ def request_certificate(request):
     if request.method == "POST":
         if request.user.is_authenticated():
             # Enter your api key here
-            xqci = CertificateGeneration(api_key=settings.APPSEMBLER_FEATURES['ACCREDIBLE_API_KEY')
+            xqci = CertificateGeneration(api_key=settings.APPSEMBLER_FEATURES['ACCREDIBLE_API_KEY'])
             username = request.user.username
             student = User.objects.get(username=username)
             course_key = SlashSeparatedCourseKey.from_deprecated_string(request.POST.get('course_id'))
