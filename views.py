@@ -15,6 +15,7 @@ from xmodule.modulestore.django import modulestore
 from opaque_keys.edx.locations import SlashSeparatedCourseKey
 from util.db import outer_atomic
 from django.db import transaction
+from django.conf import settings
 
 from courseware.courses import (
     get_course,
